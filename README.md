@@ -1,10 +1,9 @@
 
 Feminist Tinderbot v0.1
-─────────────────────────────────────────────────
+=======================
 Copyright © 2016 Becky Russoniello @httpness
-─────────────────────────────────────────────────
+
 Licensed under the MIT license.
-─────────────────────────────────────────────────
 
 Swipe right or left based on keywords in each user's bio.
 
