@@ -14,12 +14,13 @@ class FeministTinderbot
   MOZILLA_USER_AGENT = 'Mozilla/5.0 (Linux; U; en-gb; KFTHWI Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Silk/3.16 Safari/535.19'.freeze
   TINDER_USER_AGENT = 'Tinder/4.0.9 (iPhone; iOS 8.1.1; Scale/2.00)'
 
-  attr_accessor :fb_token, :tinder_token, :targets, :file_targets, :profile_text
+  attr_accessor :fb_token, :tinder_token, :swiper, :targets, :file_targets, :profile_text
 
   def initialize(fb_login:, fb_password:)
     get_facebook_auth_token(fb_login: fb_login, fb_password: fb_password)
     establish_tinder_connection
     @targets = []
+    @swiper = Swiper.new
   end
 
   def get_facebook_auth_token(fb_login:, fb_password:)
@@ -78,6 +79,6 @@ class FeministTinderbot
     targets.push(profile)
     file_targets.write(target.inspect + "\n")
     profile_text.write(profile.all_text + "\n\n")
-    #trsp = @conn.get 'like/'+target["_id"] # this would be to swipe right
+    swiper.swipe(profile)
   end
 end
