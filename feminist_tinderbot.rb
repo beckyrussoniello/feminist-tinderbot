@@ -6,6 +6,7 @@ require 'faraday'
 require 'faraday_middleware'
 require 'json'
 require 'pry'
+require './profile.rb'
 
 class FeministTinderbot
 
@@ -55,14 +56,17 @@ class FeministTinderbot
   end
 
   def auto_swipe(log_targets: true) # RIGHT NOW THIS JUST LOGS NEARBY USERS' PROFILE DATA. TODO: SWIPING CRITERIA / ACTUAL SWIPING.
-    @file_targets = File.open("targets.txt", "a") if log_targets
+    @file_targets = File.open('targets.txt', 'a') if log_targets
+    @profile_text = File.open('profile_text.txt', 'a')
 
     begin
       nearby_users = get_nearby_users
       while(nearby_users.present?)
         nearby_users.each do |target|
-          targets.push(target)
-          file_targets.write(target.inspect+"\n")
+          profile = Profile.new(profile_hash: target)
+          targets.push(profile)
+          file_targets.write(target.inspect + "\n")
+          @profile_text.write(profile.all_text + "\n\n")
           #trsp = @conn.get 'like/'+target["_id"] # this would be to swipe right
         end
         nearby_users = get_nearby_users
@@ -73,5 +77,4 @@ class FeministTinderbot
       file_targets.close if file_targets
     end
   end
-  
 end
