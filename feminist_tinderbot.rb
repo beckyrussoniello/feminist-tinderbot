@@ -5,6 +5,7 @@ require 'mechanize'
 require 'faraday'
 require 'faraday_middleware'
 require 'json'
+require 'classifier-reborn'
 require 'pry'
 require './profile.rb'
 require './swiper.rb'
@@ -21,7 +22,7 @@ class FeministTinderbot
     get_facebook_auth_token(fb_login: fb_login, fb_password: fb_password)
     establish_tinder_connection
     @targets = []
-    @swiper = Swiper.new
+    @swiper = Swiper.new(connection: @conn)
   end
 
   def get_facebook_auth_token(fb_login:, fb_password:)
