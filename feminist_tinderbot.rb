@@ -7,6 +7,7 @@ require 'faraday_middleware'
 require 'json'
 require 'pry'
 require './profile.rb'
+require './swiper.rb'
 
 class FeministTinderbot
 
