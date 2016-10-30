@@ -5,8 +5,10 @@ require 'mechanize'
 require 'faraday'
 require 'faraday_middleware'
 require 'json'
+require 'classifier-reborn'
 require 'pry'
 require './profile.rb'
+require './swiper.rb'
 
 class FeministTinderbot
 
@@ -20,7 +22,7 @@ class FeministTinderbot
     get_facebook_auth_token(fb_login: fb_login, fb_password: fb_password)
     establish_tinder_connection
     @targets = []
-    @swiper = Swiper.new
+    @swiper = Swiper.new(connection: @conn)
   end
 
   def get_facebook_auth_token(fb_login:, fb_password:)
@@ -51,12 +53,12 @@ class FeministTinderbot
   end
 
   def get_nearby_users
-    response = @conn.post 'user/recs'
+    response = @conn.post('user/recs')
     parsed_response = JSON.parse(response.body)
     parsed_response['results']
   end
 
-  def auto_swipe(log_targets: true) # RIGHT NOW THIS JUST LOGS NEARBY USERS' PROFILE DATA. TODO: SWIPING CRITERIA / ACTUAL SWIPING.
+  def auto_swipe(log_targets: true)
     @file_targets = File.open('targets.txt', 'a') if log_targets
     @profile_text = File.open('profile_text.txt', 'a')
 
